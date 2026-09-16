@@ -1,3 +1,8 @@
+/*
+/se crea la clase abstracta figura con todos sus atributos
+/abstractos
+*/
+
 abstract class Figuras{
 
     public abstract double area();
@@ -18,11 +23,11 @@ class Circulo extends Figuras {
     }
 
     public double area() {
-        return Math.PI * (radio * radio);
+        return 3.14 * (radio * radio);
     }
 
     public double perimetro() {
-        return 2 * Math.PI * radio;
+        return 3.14 * 3.14 * radio;
     }
 }
 
