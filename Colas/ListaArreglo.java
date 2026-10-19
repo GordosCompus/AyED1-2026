@@ -42,7 +42,6 @@ public class ListaArreglo<T> implements Lista<T> {
         }
 
         // Desplazar todos los elementos existentes una casilla hacia la derecha
-        // Se recorre de atrás hacia adelante para no sobreescribir valores
         for (int i = tamanio; i > 0; i--) {
             elementos[i] = elementos[i - 1];
         }
@@ -151,6 +150,10 @@ public class ListaArreglo<T> implements Lista<T> {
             System.out.print(elementos[i] + (i < tamanio - 1 ? ", " : ""));
         }
         System.out.println(" ]");
+    }
+
+    public boolean estaLlena(){
+        return tamanio != capacidad;
     }
 }
 

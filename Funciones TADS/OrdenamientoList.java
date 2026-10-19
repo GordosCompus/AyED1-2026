@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 public class OrdenamientoList {
-    // Version Optimizada de BubbleSort
  public static void bubbleSort(ArrayList<Integer> list) {
         int n = list.size();
         boolean intercambio;

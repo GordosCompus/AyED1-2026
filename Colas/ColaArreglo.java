@@ -16,6 +16,10 @@ public class ColaArreglo<T> extends ListaArreglo<T> implements Cola<T>{
         return super.esVacia();
     }
 
+    public boolean estaLlena(){
+        return super.estaLlena();
+    }
+
     public void vaciar(){
         while(!esVacia()){
             desencolar();

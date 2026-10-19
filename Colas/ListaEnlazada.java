@@ -8,7 +8,7 @@ public class ListaEnlazada<T> implements Lista<T> {
     /**
      * Clase interna que representa un nodo en la memoria RAM.
      */
-    private static class Nodo<T> {
+    protected static class Nodo<T> {
         T dato;
         Nodo<T> siguiente;
 
@@ -16,6 +16,23 @@ public class ListaEnlazada<T> implements Lista<T> {
             this.dato = dato;
             this.siguiente = null;
         }
+
+        public T getDato() {
+            return dato;
+        }
+
+        public void setDato(T dato) {
+            this.dato = dato;
+        }
+
+        public Nodo<T> getSiguiente() {
+            return siguiente;
+        }
+
+        public void setSiguiente(Nodo<T> siguiente) {
+            this.siguiente = siguiente;
+        }
+        
     }
 
     private Nodo<T> cabeza;
@@ -31,17 +48,17 @@ public class ListaEnlazada<T> implements Lista<T> {
      */
     @Override
     public void InsertarFin(T item) {
-        // 1. Reservar memoria en el Heap para el nuevo nodo
+        // Reservar memoria en el Heap para el nuevo nodo
         Nodo<T> nuevo = new Nodo<>(item);
 
-        // Caso especial: si la lista está vacía, el nuevo nodo se convierte en la cabeza
+        // si la lista está vacía, el nuevo nodo se convierte en la cabeza
         if (esVacia()) {
             cabeza = nuevo;
         } else {
             // Si la lista no está vacía, debemos recorrerla hasta el último nodo actual
             Nodo<T> actual = cabeza;
             while (actual.siguiente != null) {
-                actual = actual.siguiente; // Avanza salto por salto
+                actual = actual.siguiente; 
             }
             actual.siguiente = nuevo;
         }
