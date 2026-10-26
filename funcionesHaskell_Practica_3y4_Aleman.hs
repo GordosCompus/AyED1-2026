@@ -159,7 +159,131 @@ primerosNat'' x
 primeros5 :: [Int]
 primeros5 =  take 5 ([1,(1+1)..]) 
 
+--EJE 14 
+--Esto seria la funcion de manera manual
+--Nos encargamos de hacer el caso base cuando hay mas elementos dentro de la lista y que corte
+--desarmamos la lista entre cabeza y cola para que haga recursividad con toda la cola y siga hasta llegar al caso base aplicando siempre el cuadrado para agregar a una nueva lista 
+listaCuadrado' :: [Int] -> [Int]
+listaCuadrado' [] = []
+listaCuadrado' (x:xs) = (x * x) : listaCuadrado' xs
 
+--Con funcion de alto orden se hace asi, en vez de usar x:xs y hacer recursion de x hasta xs solo le pasamos la lista completa y que map se encargye de todo
+-- ARQUITECTURA 2: Función de Alto Orden (Abstracción del motor recursivo)
+-- Abandonamos el control manual. No desarmamos la lista, la pasamos entera ('xs').
+-- 1. No hay caso base visible porque 'map' lo tiene programado en su propio código fuente.
+-- 2. Inyectamos la lógica matemática directo a la ALU con la Sección de Operador (^2).
+-- 3. 'map' se encarga internamente de desarmar, aplicar y volver a ensamblar los punteros.
+listaCuadrado :: [Int] -> [Int]
+listaCuadrado xs = map (^2) xs
+
+--si no tuvieramos un metodo para el cuadrado tendriamos qu eusar lambda
+listaCuadrado'' :: [Int] -> [Int]
+listaCuadrado'' xs = map (\x -> x*x) xs
+
+
+--EJE 15 
+divLista :: Int -> [Int]
+divLista x = filter (\y -> mod x y == 0) [1,(1+1)..x] --esto seria una forma si no tenemos una funcion definida para ver si es divisor
+                                                    --Por lo tanto teneos que indicarle una funcion lambda \y que tome como parametro la lista de la derecha y la vaya evaluando
+
+--si tenemos una funcion que cumple con lo que necesitamos la podmeos iyecctar directo a la funcion de alto orden 
+numDiv :: Int -> Int -> Bool
+numDiv x y = (x `mod` y) == 0
+
+--inyecion directa 
+divLista' :: Int -> [Int]
+divLista' x = filter (numDiv x) [1,(1+1)..x]  --De esta forma la misma funcion de alto orden se encarga de que al parametro y lo busque en la lista en vez de andar  llamando a una funcion lambda
+
+--EJE 16
+listaPrimos :: (Integral a) => [a] -> [a]
+listaPrimos xs = filter (natPrimo) xs --Tenemos definido natPrimo en el eje 5
+
+--si no tuvieramos definido el natPrimo seria con lambda 
+listaPrimos' :: (Integral a) => [a] -> [a]
+listaPrimos' xs = filter (\x -> length [y | y <- [1..x] , x `mod` y == 0] == 2) xs
+
+--Eje 17
+sumaCuadrados :: (Integral a) => [a] -> a
+sumaCuadrados xs = foldl' (+) 0 (map (^2) xs) --Usando foldl' colapsa en una suma al cuadrado de la lista 
+
+sumaCuadrados' :: (Integral a) => [a] -> a
+sumaCuadrados' xs = sum (map (^2) xs) -- Solo usando map para convertir en cuadrado la lista y sumandola toda 
+
+--EJE 18
+succLista :: (Integral a) => [a] -> [a]
+succLista xs = map (succ) xs
+
+succLista' :: (Integral a) => [a] -> [a]
+succLista' xs = map (\x -> x+1) xs
+
+--EJE 19
+sumLista :: [Int] -> Int
+sumLista xs = foldl' (+) 0 xs
+
+sumLista'' :: [Int] -> Int
+sumLista'' xs = foldl' (\acc x -> acc + x) 0 xs --LAMBDA DE FOLDL'
+
+sumLista' :: [Int] -> Int
+sumLista' xs = sum xs 
+
+--EJE 20
+factorial :: Int -> Int
+factorial x
+         |x < 0 = undefined
+         |otherwise = foldl' (*) 1 [1,1+1..x] --  foldl' (\acc x -> acc * x) 1 [1,1+1..x]
+
+--EJE 21 
+and' :: [Bool] -> Bool
+and' xs = foldl' (&&) True xs 
+
+and'' :: [Bool] -> Bool
+and'' xs = foldl' (\acc x -> acc && x) True xs 
+
+--EJE 22
+tam :: [a] -> Int
+tam xs = foldl' (\acc x -> acc + 1) 0 xs
+
+tam' :: [a] -> Int
+tam' xs = foldr (\x acc-> acc + 1) 0 xs 
+
+--diferencias de foldl' y foldr
+-- Mismos parámetros: operador (-), acumulador base 0 y lista [1, 2, 3]
+
+-- 1. Evaluación con foldl (Asociatividad por la Izquierda)
+ejemploFoldl :: Int
+ejemploFoldl = foldl (-) 0 [1, 2, 3]
+-- ((0 - 1) - 2) - 3  ==>  (-1 - 2) - 3  ==>  -3 - 3  ==>  -6
+
+-- 2. Evaluación con foldr (Asociatividad por la Derecha)
+ejemploFoldr :: Int
+ejemploFoldr = foldr (-) 0 [1, 2, 3]
+-- 1 - (2 - (3 - 0))  ==>  1 - (2 - 3)  ==>  1 - (-1)  ==>  2
+
+--LISTAS COMPRENSION
+--EJE 23
+succComprension :: [Int] -> [Int]
+succComprension lista = [y+1| y <- lista ] 
+
+--EJE 24
+cuaListComprension :: (Integral a) => [a] -> [a]
+cuaListComprension lista = [y*y | y <- lista ]
+
+--EJE 25
+paresMay10 :: [Int] -> [Int]
+paresMay10 lista = [y | y <- lista , (y `mod` 2 == 0) && y > 10]
+
+
+--EJE 26
+divComprension :: Int -> [Int]
+divComprension x = [y | y <- [1, 1+1..x] , x `mod` y == 0]
+
+--EJE 27
+todosOcurrenEn :: Eq a => [a] -> [a] -> Bool
+todosOcurrenEn xs ys = and [x `elem` ys | x <- xs ] --elem es pertenece y and inyecta && a cada elemento de la lista y devuelve Bool
+
+--EJE 28
+primos2n :: (Integral a) => a -> [a]
+primos2n x = [y | y <- [2, 2+1..x] , length [j |j <- [1..y] , (y `mod` j == 0)] ==2] --Podriamos haber usado la funcion natPrimo pero me hice el cra
 
 
 
