@@ -285,6 +285,40 @@ todosOcurrenEn xs ys = and [x `elem` ys | x <- xs ] --elem es pertenece y and in
 primos2n :: (Integral a) => a -> [a]
 primos2n x = [y | y <- [2, 2+1..x] , length [j |j <- [1..y] , (y `mod` j == 0)] ==2] --Podriamos haber usado la funcion natPrimo pero me hice el cra
 
+--EJE 29
+paresInfinitos :: [Int]
+paresInfinitos = [y | y <- [0..] , y `mod` 2 == 0]
+
+--EJE 30
+productoCartesiano :: (Integral a) => [a] -> [a] -> [(a,a)]
+productoCartesiano xs ys = [(x,y) | x <- xs , y <- ys]
+
+--EJE 31
+--Para probar lo que queremos hacer
+es :: Int -> Bool
+es y = and [y `mod` j == j-1 | j <- [1, 1+1..10]]
+
+nat15000 :: [Int]
+nat15000 = [y | y <- [1, 1+1..5000] , and [y `mod` j == j-1 | j <- [1, 1+1..10]] == True ]
+
+--Optimizado 
+nat15000' :: [Int]
+nat15000' = [y | y <- [1..5000] , and [y `mod` j == j-1 | j <- [1..10]]]
+
+--EJE 32 
+ocurrencias :: (Eq a) => a -> [a] -> Int
+ocurrencias x ys = length [ j | j <- ys , x == j]
+
+--EJE 33
+split2 :: [a] -> [([a],[a])]
+split2 xs = [(take i xs  , drop i xs) | i <- [0..length xs]]
+
+a :: [Int] -> [Int]
+a xs = [ xs !! y + xs !! y+1 | y <- [1..(length xs)-1]]
+
+-- EJE 34
+sumaSeg :: [Int] -> Int
+sumaSeg xs = sum [sum (take i xs) | i <- [0 .. length xs]]
 
 
 
